@@ -5,8 +5,10 @@ import 'package:wave/wave.dart';
 
 class BucketModel extends StatefulWidget {
   late double bucketHeight;
+  late double waterHeight;
 
-  BucketModel({required this.bucketHeight, Key? key}) : super(key: key);
+  BucketModel({required this.bucketHeight, required this.waterHeight, Key? key})
+      : super(key: key);
 
   @override
   State<BucketModel> createState() => _BucketModelState();
@@ -27,6 +29,9 @@ class _BucketModelState extends State<BucketModel> {
                   alignment: Alignment.topLeft,
                   child: Column(
                     children: [
+                      Container(
+                        height: widget.bucketHeight * 0.3,
+                      ),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
@@ -44,7 +49,8 @@ class _BucketModelState extends State<BucketModel> {
             flex: 5,
             child: Container(
               margin: const EdgeInsets.all(10),
-              child: Water(height: widget.bucketHeight),
+              child: Water(
+                  height: widget.bucketHeight, waterHeight: widget.waterHeight),
             ),
           ),
         ],
@@ -55,7 +61,9 @@ class _BucketModelState extends State<BucketModel> {
 
 class Water extends StatefulWidget {
   double height;
-  Water({required this.height, Key? key}) : super(key: key);
+  double waterHeight;
+  Water({required this.height, required this.waterHeight, Key? key})
+      : super(key: key);
 
   @override
   _WaterState createState() => _WaterState();
@@ -66,7 +74,7 @@ class _WaterState extends State<Water> {
   Widget build(BuildContext context) {
     Widget buildCard(Config config, double height) {
       return Container(
-        height: height,
+        height: widget.height,
         width: double.infinity,
         decoration: BoxDecoration(
           boxShadow: [
@@ -88,8 +96,8 @@ class _WaterState extends State<Water> {
           clipBehavior: Clip.antiAlias,
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
-            bottomRight: Radius.circular(50.0),
-            bottomLeft: Radius.circular(50.0),
+            bottomRight: Radius.circular(30.0),
+            bottomLeft: Radius.circular(30.0),
             topRight: Radius.circular(5.0),
             topLeft: Radius.circular(5.0),
           )),
@@ -97,7 +105,7 @@ class _WaterState extends State<Water> {
             alignment: Alignment.bottomCenter,
             child: WaveWidget(
               config: config,
-              size: Size(double.infinity, widget.height * 0.3),
+              size: Size(double.infinity, widget.waterHeight),
               waveAmplitude: 0.5,
             ),
           ),

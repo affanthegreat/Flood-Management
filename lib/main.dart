@@ -1,8 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:untitled/Core/Firebase/firebasemodel.dart';
 
 import 'Core/Home/home.dart';
 
+var F = FirebaseModal();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:untitled/Core/Firebase/developersettings.dart';
 import 'package:untitled/Designs/designs.dart';
 
 class CustomDrawer {
@@ -9,9 +10,9 @@ class CustomDrawer {
   renderDefaultModel() {
     if (containsDefaultModel == false) {
       addHeading("MENU");
-      addButton("Dark theme");
-      addButton("Settings");
-      addButton("About");
+      addButton("Dark theme", Scaffold());
+      addButton("Settings", Scaffold());
+      addButton("About", Scaffold());
       containsDefaultModel = true;
     }
   }
@@ -19,8 +20,8 @@ class CustomDrawer {
   renderDeveloperSettings() {
     if (containsDeveloperSettings == false) {
       addHeading("Developer Settings");
-      addButton("Update Data");
-      addButton("Upload Report");
+      addButton("Update Data", DeveloperOptions());
+      addButton("Upload Report", Scaffold());
       containsDeveloperSettings = true;
     }
   }
@@ -50,11 +51,8 @@ class CustomDrawer {
     model.add(div);
   }
 
-  addButton(String str) {
-    var temporary = Container(
-      margin: const EdgeInsets.only(left: 15, right: 15, top: 5, bottom: 10),
-      child: Text(str, style: poppins(textDark, h4, FontWeight.w500)),
-    );
+  addButton(String str, Widget route) {
+    var temporary = MenuButton(str: str, widget: route);
     var div = Container(
         margin: const EdgeInsets.only(left: 15, right: 15),
         child: Divider(
@@ -66,4 +64,25 @@ class CustomDrawer {
   }
 
   render() {}
+}
+
+class MenuButton extends StatelessWidget {
+  String str;
+  Widget widget;
+  MenuButton({required this.str, required this.widget, Key? key})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+        onTap: () {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => widget));
+        },
+        child: Container(
+          margin:
+              const EdgeInsets.only(left: 15, right: 15, top: 5, bottom: 10),
+          child: Text(str, style: poppins(textDark, h4, FontWeight.w500)),
+        ));
+  }
 }

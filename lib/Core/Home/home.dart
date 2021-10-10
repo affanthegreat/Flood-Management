@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled/Core/Bucket/Bucket.dart';
 import 'package:untitled/Core/Buttons/Models/buttonmodel.dart';
@@ -34,45 +35,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    customInit() {
-      // Bucket Creator
-      var height = MediaQuery.of(context).size.height;
-      var width = MediaQuery.of(context).size.height;
-      var bucketHeight = height * 0.45;
-
-      bucket = Bucket();
-      bucket.setBucketHeight(bucketHeight);
-      bucket.setBucketStream("");
-      bucket.renderModel();
-
-      //ButtonCreator
-      var pressureButton = Button();
-      pressureButton.setBottomText("Water Pressure");
-      pressureButton.setButtonColor(buttonColor);
-      pressureButton.setMeasureUnit("psi");
-      pressureButton.setButtonLabel("69");
-      pressureButton.render();
-
-      var levelButton = Button();
-      levelButton.setBottomText("Water Level (in ft)");
-      levelButton.setButtonColor(buttonColor);
-      levelButton.setMeasureUnit("ft");
-      levelButton.setButtonLabel("69");
-      levelButton.render();
-
-      var bigButton = Button();
-      bigButton.setButtonLabel("Reports");
-      bigButton.setButtonColor(bigButtonColor);
-      bigButton.setMeasureUnit("");
-      bigButton.setBottomText(
-          "Access all the previous reports related to floods in this region.");
-      bigButton.render();
-
-      buttons.add(pressureButton);
-      buttons.add(levelButton);
-      buttons.add(bigButton);
-    }
-
     Widget buildBottomBar() {
       return Container(
         alignment: Alignment.bottomCenter,
@@ -105,7 +67,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       );
     }
 
-    Widget statusText() {
+    Widget statusText(bool status) {
       return Align(
           alignment: Alignment.centerLeft,
           child: Container(
@@ -113,18 +75,21 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             child: RichText(
               text: TextSpan(
                   text: "STATUS\n",
-                  style: poppins(textDark, h5, FontWeight.bold),
+                  style: poppins(textLight, h6, FontWeight.bold),
                   children: <TextSpan>[
-                    TextSpan(
-                      text: "Minimal",
-                      style: poppins(textDark, h1 + 10, FontWeight.w600),
-                    )
+                    status
+                        ? TextSpan(
+                            text: "Minimal",
+                            style: poppins(textDark, h1 + 10, FontWeight.w600),
+                          )
+                        : TextSpan(
+                            text: "Flood Detected!",
+                            style: poppins(red, h1 + 10, FontWeight.w600),
+                          )
                   ]),
             ),
           ));
     }
-
-    customInit();
 
     Widget buttonsRender() {
       return Container(
@@ -166,30 +131,89 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       Scaffold.of(context).openEndDrawer();
     }
 
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.height;
+    var bucketHeight = height * 0.45;
     Widget getBody() {
       List<Widget> pages = [
-        ListView(
-          physics: const BouncingScrollPhysics(
-            parent: AlwaysScrollableScrollPhysics(),
-          ),
-          children: [
-            statusText(),
-            bucket.getModel(),
-            Container(
-                margin: const EdgeInsets.only(left: 15, right: 15, top: 5),
-                child: buttonsRender()),
-            Container(
-              margin: const EdgeInsets.only(left: 15, right: 15, top: 5),
-              child: Divider(
-                thickness: 0.5,
-                color: textLight.withOpacity(0.5),
-              ),
-            ),
-            bigButton(),
-            Container(
-              height: 80,
-            )
-          ],
+        StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance.collection('root').snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              // Bucket Creator
+              buttons = [];
+              bucket.setBucketHeight(bucketHeight);
+              bucket.setWaterHeight(bucketHeight *
+                  (snapshot.data!.docs[0]['percentageFilled'] / 100));
+              bucket.setBucketStream("");
+              bucket.renderModel();
+
+              //ButtonCreator
+              var pressureButton = Button();
+              pressureButton.setBottomText("Water Pressure");
+              pressureButton.setButtonColor(buttonColor);
+              pressureButton.setMeasureUnit("psi");
+              pressureButton.setButtonLabel(
+                  snapshot.data!.docs[0]['pressure'].toString());
+              pressureButton.render();
+
+              var levelButton = Button();
+              levelButton.setBottomText("Water Level (in ft)");
+              levelButton.setButtonColor(buttonColor);
+              levelButton.setMeasureUnit("ft");
+              levelButton
+                  .setButtonLabel(snapshot.data!.docs[0]['feet'].toString());
+              levelButton.render();
+
+              var bigButton = Button();
+              bigButton.setButtonLabel("Reports");
+              bigButton.setButtonColor(bigButtonColor);
+              bigButton.setMeasureUnit("");
+              bigButton.setBottomText(
+                  "Access all the previous reports related to floods in this region.");
+              bigButton.render();
+
+              buttons.add(pressureButton);
+              buttons.add(levelButton);
+              buttons.add(bigButton);
+              print((snapshot.data!.docs[0]['percentageFilled'] / 100));
+              var status =
+                  (snapshot.data!.docs[0]['percentageFilled'] / 100) < 0.70;
+              return ListView(
+                physics: const BouncingScrollPhysics(
+                  parent: AlwaysScrollableScrollPhysics(),
+                ),
+                children: [
+                  statusText(status),
+                  bucket.getModel(),
+                  Container(
+                      margin:
+                          const EdgeInsets.only(left: 15, right: 15, top: 5),
+                      child: buttonsRender()),
+                  Container(
+                    margin: const EdgeInsets.only(left: 15, right: 15, top: 5),
+                    child: Divider(
+                      thickness: 0.5,
+                      color: textLight.withOpacity(0.5),
+                    ),
+                  ),
+                  BigButton(
+                    label: buttons[2].buttonLabel,
+                    buttonColor: buttons[2].buttonColor,
+                    shortDescription: buttons[2].bottomText,
+                  ),
+                  Container(
+                    height: 80,
+                  )
+                ],
+              );
+            } else {
+              return const Center(
+                  child: CircularProgressIndicator(
+                semanticsLabel: 'Linear progress indicator',
+              ));
+            }
+          },
         ),
         drawer.listView(context)
       ];

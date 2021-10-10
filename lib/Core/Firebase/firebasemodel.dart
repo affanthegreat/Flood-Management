@@ -1,17 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class FirebaseFetchModel {
+class Data {
+  double? pressure;
+  double? feet;
+  double? percentageFilled;
+
+  createMap() {
+    return {
+      "pressure": pressure,
+      "feet": feet,
+      "percentageFilled": percentageFilled
+    };
+  }
+}
+
+class FirebaseModal {
   FirebaseFirestore instance = FirebaseFirestore.instance;
 
-  updateData(map) {
-    try {
-      var pointingCollection = instance.collection("root").doc("data").set(map);
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  getData() {
-    var stream = instance.collection('users').doc('ABC123').snapshots();
+  updateData(Data data) {
+    var pointingCollection =
+        instance.collection("root").doc("data").set(data.createMap());
   }
 }

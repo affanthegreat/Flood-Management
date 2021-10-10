@@ -4,6 +4,7 @@ class Bucket {
   late String bucketStream;
   late double bucketHeight;
   late BucketModel model;
+  late double waterHeight;
 
   setBucketStream(String bucketStream) {
     this.bucketStream = bucketStream;
@@ -11,6 +12,10 @@ class Bucket {
 
   setBucketHeight(double bucketHeight) {
     this.bucketHeight = bucketHeight;
+  }
+
+  setWaterHeight(double bucketHeight) {
+    this.waterHeight = bucketHeight;
   }
 
   BucketModel getModel() {
@@ -26,6 +31,9 @@ class Bucket {
   }
 
   renderModel() {
-    model = BucketModel(bucketHeight: bucketHeight);
+    model = BucketModel(
+      bucketHeight: bucketHeight,
+      waterHeight: waterHeight,
+    );
   }
 }
