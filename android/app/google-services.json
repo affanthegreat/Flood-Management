@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "928877155730",
+    "project_id": "floomd",
+    "storage_bucket": "floomd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:928877155730:android:54bd95775695b8aa495d4b",
+        "android_client_info": {
+          "package_name": "com.valno.flood"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "928877155730-eom2gai0eks240j8a16qa9o45accifc2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbP8eL_IRsKXDVoqC33L4USa3CXaLTzsQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "928877155730-eom2gai0eks240j8a16qa9o45accifc2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
