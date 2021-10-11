@@ -10,7 +10,6 @@ class CustomDrawer {
   renderDefaultModel() {
     if (containsDefaultModel == false) {
       addHeading("MENU");
-      addButton("Dark theme", Scaffold());
       addButton("Settings", Scaffold());
       addButton("About", Scaffold());
       containsDefaultModel = true;
@@ -28,6 +27,9 @@ class CustomDrawer {
 
   Widget listView(BuildContext context) {
     return ListView.builder(
+      physics: const BouncingScrollPhysics(
+        parent: AlwaysScrollableScrollPhysics(),
+      ),
       itemCount: model.length,
       itemBuilder: (context, index) {
         return model[index];

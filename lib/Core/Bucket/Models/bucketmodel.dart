@@ -23,7 +23,7 @@ class _BucketModelState extends State<BucketModel> {
           border: Border.all(color: textLight, width: 0.16),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.shade200,
+              color: Colors.grey.shade300,
               blurRadius: 10.0,
               spreadRadius: 0.0,
               offset: const Offset(
@@ -64,8 +64,20 @@ class _BucketModelState extends State<BucketModel> {
             flex: 5,
             child: Container(
               margin: const EdgeInsets.all(10),
-              child: Water(
-                  height: widget.bucketHeight, waterHeight: widget.waterHeight),
+              child: Column(
+                children: [
+                  Water(
+                      height: widget.bucketHeight,
+                      waterHeight: widget.waterHeight),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      "Visual Representation",
+                      style: poppins(textLight, h6, FontWeight.w600),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],

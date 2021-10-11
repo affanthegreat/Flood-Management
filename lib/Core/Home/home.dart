@@ -78,16 +78,16 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             child: RichText(
               text: TextSpan(
                   text: "STATUS\n",
-                  style: poppins(textLight, h6, FontWeight.bold),
+                  style: poppins(textLight, h6, FontWeight.w600),
                   children: <TextSpan>[
                     status
                         ? TextSpan(
                             text: "Minimal",
-                            style: poppins(textDark, h1 + 10, FontWeight.w600),
+                            style: poppins(textDark, h1 + 10, FontWeight.w700),
                           )
                         : TextSpan(
                             text: "Flood Detected!",
-                            style: poppins(red, h1 + 10, FontWeight.w600),
+                            style: poppins(red, h1 + 10, FontWeight.w700),
                           )
                   ]),
             ),

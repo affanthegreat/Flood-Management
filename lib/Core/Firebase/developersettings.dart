@@ -70,14 +70,26 @@ class _DeveloperOptionsState extends State<DeveloperOptions> {
       appBar: AppBar(
         backgroundColor: backgroundColor,
         elevation: 0,
-        toolbarHeight: 10,
+        iconTheme: IconThemeData(color: textDark),
+        toolbarHeight: 30,
+        automaticallyImplyLeading: true,
       ),
       body: StreamBuilder(
           stream: FirebaseFirestore.instance.collection('root').snapshots(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return ListView(
+                physics: const BouncingScrollPhysics(
+                  parent: AlwaysScrollableScrollPhysics(),
+                ),
                 children: [
+                  Container(
+                    margin: const EdgeInsets.only(left: 15, right: 15, top: 20),
+                    child: Text(
+                      "Current Values",
+                      style: poppins(textLight, h6),
+                    ),
+                  ),
                   Container(
                       margin:
                           const EdgeInsets.only(left: 15, right: 15, top: 8),

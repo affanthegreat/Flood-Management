@@ -28,7 +28,7 @@ class ButtonModel extends StatelessWidget {
                 children: <TextSpan>[
                   TextSpan(
                     text: " " + measureUnit,
-                    style: poppins(textDark, h4, FontWeight.w600),
+                    style: poppins(textLight, h6, FontWeight.w600),
                   )
                 ]),
           ),
@@ -71,7 +71,7 @@ class BigButton extends StatelessWidget {
           border: Border.all(color: textLight, width: 0.16),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.shade200,
+              color: Colors.grey.shade300,
               blurRadius: 10.0,
               spreadRadius: 0.0,
               offset: const Offset(

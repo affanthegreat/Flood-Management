@@ -37,7 +37,7 @@ class _RemasteredShowcaseState extends State<RemasteredShowcase> {
             border: Border.all(color: textLight, width: 0.16),
             boxShadow: [
               BoxShadow(
-                color: Colors.grey.shade200,
+                color: Colors.grey.shade300,
                 blurRadius: 10.0,
                 spreadRadius: 0.0,
                 offset: const Offset(
@@ -55,7 +55,7 @@ class _RemasteredShowcaseState extends State<RemasteredShowcase> {
               margin: const EdgeInsets.all(10),
               child: Text(
                 "Key Metrics",
-                style: poppins(textLight.withOpacity(0.7), h5, FontWeight.w600),
+                style: poppins(textLight.withOpacity(0.6), h6, FontWeight.w600),
               ),
             ),
             Row(
