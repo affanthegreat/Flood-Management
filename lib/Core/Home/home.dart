@@ -9,6 +9,8 @@ import 'package:untitled/Designs/designs.dart';
 import 'Drawer/drawer.dart';
 import 'NavigationBar/customnavigationbar.dart';
 
+var showcase = Showcase();
+
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -102,6 +104,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             if (snapshot.hasData) {
               // Bucket Creator
               buttons = [];
+              showcase = Showcase();
               bucket = Bucket();
               bucket.setBucketHeight(bucketHeight);
               bucket.setWaterHeight(bucketHeight *
@@ -131,23 +134,23 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               flowRate.setButtonColor(buttonColor);
               flowRate.setMeasureUnit("gpm");
               flowRate.setButtonLabel(
-                  snapshot.data!.docs[0]['pressure'].toString());
+                  snapshot.data!.docs[0]['flowrate'].toString());
               flowRate.render();
 
               var humidity = Button();
               humidity.setBottomText("Humidity");
               humidity.setButtonColor(buttonColor);
               humidity.setMeasureUnit("");
-              humidity
-                  .setButtonLabel(snapshot.data!.docs[0]['feet'].toString());
+              humidity.setButtonLabel(
+                  snapshot.data!.docs[0]['humidity'].toString());
               humidity.render();
 
               var temperature = Button();
               temperature.setBottomText("Temperature");
               temperature.setButtonColor(buttonColor);
               temperature.setMeasureUnit("°c");
-              temperature
-                  .setButtonLabel(snapshot.data!.docs[0]['feet'].toString());
+              temperature.setButtonLabel(
+                  snapshot.data!.docs[0]['temperature'].toString());
               temperature.render();
 
               var bigButton = Button();
@@ -158,7 +161,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   "Access all the previous reports related to floods in this region.");
               bigButton.render();
 
-              var showcase = Showcase();
               showcase.addWidget(pressureButton);
               showcase.addWidget(levelButton);
               showcase.addWidget(flowRate);
