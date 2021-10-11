@@ -20,21 +20,6 @@ class ButtonModel extends StatelessWidget {
           top: 15,
           bottom: 5,
         ),
-        decoration: BoxDecoration(
-            border: Border.all(color: textLight, width: 0.06),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.shade300,
-                blurRadius: 10.0,
-                spreadRadius: 0.0,
-                offset: const Offset(
-                  2.0,
-                  3.0,
-                ),
-              )
-            ],
-            color: buttonColor,
-            borderRadius: BorderRadius.circular(10)),
         child: Center(
           child: RichText(
             text: TextSpan(
@@ -60,7 +45,7 @@ class BottomText extends StatelessWidget {
     return Container(
       child: Text(
         buttomText,
-        style: poppins(textDark, h4, FontWeight.normal),
+        style: poppins(textDark, h6, FontWeight.normal),
       ),
     );
   }
@@ -81,7 +66,7 @@ class BigButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      margin: const EdgeInsets.all(15),
+      margin: const EdgeInsets.only(left: 15, right: 15, top: 7),
       decoration: BoxDecoration(
           border: Border.all(color: textLight, width: 0.16),
           boxShadow: [

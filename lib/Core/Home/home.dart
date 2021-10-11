@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled/Core/Bucket/Bucket.dart';
 import 'package:untitled/Core/Buttons/Models/buttonmodel.dart';
+import 'package:untitled/Core/Buttons/Models/remasteredbutton.dart';
 import 'package:untitled/Core/Buttons/button.dart';
 import 'package:untitled/Designs/designs.dart';
 
@@ -91,49 +92,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           ));
     }
 
-    Widget buttonsRender() {
-      return Container(
-          height: 120,
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  children: [
-                    Expanded(child: buttons[0].getButtonModel()),
-                    buttons[0].getBottomTextModel()
-                  ],
-                ),
-              ),
-              Container(
-                width: 2,
-              ),
-              Expanded(
-                child: Column(
-                  children: [
-                    Expanded(child: buttons[1].getButtonModel()),
-                    buttons[1].getBottomTextModel()
-                  ],
-                ),
-              )
-            ],
-          ));
-    }
-
-    Widget bigButton() {
-      return BigButton(
-        label: buttons[2].buttonLabel,
-        buttonColor: buttons[2].buttonColor,
-        shortDescription: buttons[2].bottomText,
-      );
-    }
-
-    openDrawer(context) {
-      Scaffold.of(context).openEndDrawer();
-    }
-
     var height = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.height;
-    var bucketHeight = height * 0.45;
+    var bucketHeight = height * 0.35;
     Widget getBody() {
       List<Widget> pages = [
         StreamBuilder<QuerySnapshot>(
@@ -142,6 +102,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             if (snapshot.hasData) {
               // Bucket Creator
               buttons = [];
+              bucket = Bucket();
               bucket.setBucketHeight(bucketHeight);
               bucket.setWaterHeight(bucketHeight *
                   (snapshot.data!.docs[0]['percentageFilled'] / 100));
@@ -165,6 +126,30 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   .setButtonLabel(snapshot.data!.docs[0]['feet'].toString());
               levelButton.render();
 
+              var flowRate = Button();
+              flowRate.setBottomText("Flow rate");
+              flowRate.setButtonColor(buttonColor);
+              flowRate.setMeasureUnit("gpm");
+              flowRate.setButtonLabel(
+                  snapshot.data!.docs[0]['pressure'].toString());
+              flowRate.render();
+
+              var humidity = Button();
+              humidity.setBottomText("Humidity");
+              humidity.setButtonColor(buttonColor);
+              humidity.setMeasureUnit("");
+              humidity
+                  .setButtonLabel(snapshot.data!.docs[0]['feet'].toString());
+              humidity.render();
+
+              var temperature = Button();
+              temperature.setBottomText("Temperature");
+              temperature.setButtonColor(buttonColor);
+              temperature.setMeasureUnit("°c");
+              temperature
+                  .setButtonLabel(snapshot.data!.docs[0]['feet'].toString());
+              temperature.render();
+
               var bigButton = Button();
               bigButton.setButtonLabel("Reports");
               bigButton.setButtonColor(bigButtonColor);
@@ -173,10 +158,13 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   "Access all the previous reports related to floods in this region.");
               bigButton.render();
 
-              buttons.add(pressureButton);
-              buttons.add(levelButton);
+              var showcase = Showcase();
+              showcase.addWidget(pressureButton);
+              showcase.addWidget(levelButton);
+              showcase.addWidget(flowRate);
+              showcase.addWidget(temperature);
+              showcase.addWidget(humidity);
               buttons.add(bigButton);
-              print((snapshot.data!.docs[0]['percentageFilled'] / 100));
               var status =
                   (snapshot.data!.docs[0]['percentageFilled'] / 100) < 0.70;
               return ListView(
@@ -188,19 +176,14 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   bucket.getModel(),
                   Container(
                       margin:
-                          const EdgeInsets.only(left: 15, right: 15, top: 5),
-                      child: buttonsRender()),
-                  Container(
-                    margin: const EdgeInsets.only(left: 15, right: 15, top: 5),
-                    child: Divider(
-                      thickness: 0.5,
-                      color: textLight.withOpacity(0.5),
-                    ),
-                  ),
+                          const EdgeInsets.only(left: 15, right: 15, top: 8),
+                      child: RemasteredShowcase(
+                        showcase: showcase,
+                      )),
                   BigButton(
-                    label: buttons[2].buttonLabel,
-                    buttonColor: buttons[2].buttonColor,
-                    shortDescription: buttons[2].bottomText,
+                    label: buttons[0].buttonLabel,
+                    buttonColor: buttons[0].buttonColor,
+                    shortDescription: buttons[0].bottomText,
                   ),
                   Container(
                     height: 80,
@@ -229,7 +212,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         appBar: AppBar(
           backgroundColor: backgroundColor,
           elevation: 0,
-          toolbarHeight: 10,
+          toolbarHeight: 0,
         ),
         body: ConstrainedBox(
           constraints: BoxConstraints(maxWidth: 500),

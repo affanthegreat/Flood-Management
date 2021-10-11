@@ -18,7 +18,22 @@ class _BucketModelState extends State<BucketModel> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 5),
+      margin: const EdgeInsets.only(left: 15, right: 15),
+      decoration: BoxDecoration(
+          border: Border.all(color: textLight, width: 0.16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.shade200,
+              blurRadius: 10.0,
+              spreadRadius: 0.0,
+              offset: const Offset(
+                2.0,
+                3.0,
+              ),
+            )
+          ],
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10)),
       child: Row(
         children: [
           Expanded(
@@ -36,7 +51,7 @@ class _BucketModelState extends State<BucketModel> {
                         alignment: Alignment.centerLeft,
                         child: Text(
                           "Risky",
-                          style: poppins(red, h5, FontWeight.w600),
+                          style: poppins(red, h6, FontWeight.w600),
                         ),
                       ),
                       Divider(
@@ -79,9 +94,9 @@ class _WaterState extends State<Water> {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(.25),
-              blurRadius: 20.0,
-              spreadRadius: 7.0,
+              color: Colors.grey.withOpacity(.27),
+              blurRadius: 15.0,
+              spreadRadius: 5.0,
               offset: const Offset(
                 5.0,
                 5.0,
