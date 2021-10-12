@@ -17,7 +17,7 @@ class ReportView extends StatefulWidget {
   _ReportViewState createState() => _ReportViewState();
 }
 
-bool isPDFloading = false;
+bool i = false;
 
 class _ReportViewState extends State<ReportView> {
   @override
@@ -29,7 +29,6 @@ class _ReportViewState extends State<ReportView> {
   @override
   void dispose() {
     // TODO: implement dispose
-    isPDFloading = false;
     super.dispose();
   }
 
@@ -81,9 +80,7 @@ class _ReportViewState extends State<ReportView> {
                   return const Center(child: CircularProgressIndicator());
                 }
               }),
-          !isPDFloading
-              ? Container()
-              : BackdropFilter(
+          if (i == false) Container() else BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
                   child: const Center(
                     child: CircularProgressIndicator(),
@@ -118,25 +115,36 @@ class _ReportBoxState extends State<ReportBox> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        setState(() {
-          isPDFloading = true;
-        });
+
         slave() async {
+          setState(() {
+            i = true;
+          });
+
+          //get application documents directory to save/check the file
           var applicationDirectory = await getApplicationDocumentsDirectory();
           var filepath = applicationDirectory.path + "/reports";
           var d = Directory(filepath).existsSync();
+          //if reports folder does not exists, then create one.
           if (d == false) {
             await Directory(filepath).create(recursive: true);
           }
+          //check whether the current pdf is available in folder. if not available
+          //superSlave function will be called.
           await File(filepath + "/${widget.report.epoch}.pdf").exists().then((status) async {
             if (status == false) {
               superSlave() async {
+
+                //show download progress shows the percentage of download. need
+                //implement a widget for this.
                 void showDownloadProgress(received, total) {
-                  if (total != -1) {
-                    print((received / total * 100).toStringAsFixed(0) + "%");
-                  }
+                  // if (total != -1) {
+                  //   print((received / total * 100).toStringAsFixed(0) + "%");
+                  // }
                 }
                try{
+                  //using dio to make a get request to url from report and saving
+                  //it to our applications document folder.
                  Response response = await dio.get(
                    widget.report.url,
                    onReceiveProgress: showDownloadProgress,
@@ -146,11 +154,13 @@ class _ReportBoxState extends State<ReportBox> {
                        validateStatus: (status) { return status! < 500; }
                    ),
                  );
-                 print(response.headers);
                  File file = File(filepath + "/${widget.report.epoch}.pdf");
                  var raf = file.openSync(mode: FileMode.write);
                  raf.writeFromSync(response.data);
                  await raf.close();
+                 setState(() {
+                   i = false;
+                 });
                  Navigator.push(context,MaterialPageRoute(builder:(context) => PDFviewer(url: filepath + "/${widget.report.epoch}.pdf")));
                }
                catch(E){
@@ -168,6 +178,7 @@ class _ReportBoxState extends State<ReportBox> {
         }
 
         slave();
+
       },
       child: Container(
         margin: const EdgeInsets.only(left: 10, right: 10, top: 5),

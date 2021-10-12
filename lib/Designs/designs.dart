@@ -11,11 +11,11 @@ var buttonColor = const Color(0xffF6F6EB);
 var bigButtonColor = const Color(0xffF8F8F8);
 
 double h1 = 32;
-double h2 = 24;
-double h3 = 19;
-double h4 = 17;
-double h5 = 15;
-double h6 = 13;
+double h2 = 26;
+double h3 = 21;
+double h4 = 19;
+double h5 = 17;
+double h6 = 15;
 
 TextStyle poppins(Color col, [double? x, FontWeight? weight]) {
   return GoogleFonts.poppins(textStyle: TextStyle(height: 1.5, letterSpacing: -0.5, fontWeight: weight ?? FontWeight.bold, color: col, fontSize: x ?? h5));
