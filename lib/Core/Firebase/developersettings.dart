@@ -70,8 +70,12 @@ class _DeveloperOptionsState extends State<DeveloperOptions> {
       appBar: AppBar(
         backgroundColor: backgroundColor,
         elevation: 0,
-        iconTheme: IconThemeData(color: textDark),
-        toolbarHeight: 30,
+        title: Text(
+          "Developer Settings",
+          style: poppins(textLight, h4, FontWeight.bold),
+        ),
+        centerTitle: true,
+        iconTheme: IconThemeData(color: textLight),
         automaticallyImplyLeading: true,
       ),
       body: StreamBuilder(
