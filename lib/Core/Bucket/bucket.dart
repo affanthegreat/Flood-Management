@@ -1,4 +1,4 @@
-import 'package:untitled/Core/Bucket/Models/bucketmodel.dart';
+import 'Models/bucketmodel.dart';
 
 class Bucket {
   late String bucketStream;

@@ -3,8 +3,8 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:untitled/Core/Firebase/firebasemodel.dart';
@@ -22,7 +22,6 @@ bool isPDFloading = false;
 class _ReportViewState extends State<ReportView> {
   @override
   void initState() {
-    FlutterDownloader.registerCallback(callback);
     // TODO: implement initState
     super.initState();
   }
@@ -34,13 +33,6 @@ class _ReportViewState extends State<ReportView> {
     super.dispose();
   }
 
-  void callback(String id, DownloadTaskStatus status, int progress) {
-    if (progress == 100) {
-      setState(() {
-        isPDFloading = false;
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -113,6 +105,8 @@ class ReportBox extends StatefulWidget {
 }
 
 class _ReportBoxState extends State<ReportBox> {
+  var dio = Dio();
+
   @override
   void initState() {
     // TODO: implement initState
@@ -137,22 +131,32 @@ class _ReportBoxState extends State<ReportBox> {
           await File(filepath + "/${widget.report.epoch}.pdf").exists().then((status) async {
             if (status == false) {
               superSlave() async {
-                await FlutterDownloader.enqueue(
-                  url: widget.report.url,
-                  savedDir: filepath,
-                  fileName: "${widget.report.epoch}.pdf",
-                  showNotification: true,
-                  // show download progress in status bar (for Android)
-                  openFileFromNotification: true, //   click on notification to open downloaded file (for Android)
-                );
+                void showDownloadProgress(received, total) {
+                  if (total != -1) {
+                    print((received / total * 100).toStringAsFixed(0) + "%");
+                  }
+                }
+               try{
+                 Response response = await dio.get(
+                   widget.report.url,
+                   onReceiveProgress: showDownloadProgress,
+                   options: Options(
+                       responseType: ResponseType.bytes,
+                       followRedirects: false,
+                       validateStatus: (status) { return status! < 500; }
+                   ),
+                 );
+                 print(response.headers);
+                 File file = File(filepath + "/${widget.report.epoch}.pdf");
+                 var raf = file.openSync(mode: FileMode.write);
+                 raf.writeFromSync(response.data);
+                 await raf.close();
+                 Navigator.push(context,MaterialPageRoute(builder:(context) => PDFviewer(url: filepath + "/${widget.report.epoch}.pdf")));
+               }
+               catch(E){
+                  rethrow;
+               }
 
-                final snackBar = SnackBar(
-                    backgroundColor: Colors.green,
-                    content: Text(
-                      'Check notification center to see progress of your download.',
-                      style: poppins(backgroundColor, h4, FontWeight.w500),
-                    ));
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
               }
 
               await superSlave();
