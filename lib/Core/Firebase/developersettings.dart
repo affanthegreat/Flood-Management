@@ -23,15 +23,11 @@ class _DeveloperOptionsState extends State<DeveloperOptions> {
       return Container(
         margin: const EdgeInsets.only(left: 15, right: 15, top: 5, bottom: 5),
         padding: const EdgeInsets.fromLTRB(10, 2, 10, 2),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5),
-            border: Border.all(color: waterColor, width: 1)),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), border: Border.all(color: waterColor, width: 1)),
         child: TextField(
           onChanged: (value) {
             if (value == "") {
-              final snackBar = SnackBar(
-                  backgroundColor: red,
-                  content: Text('Fields cannot be empty'));
+              final snackBar = SnackBar(backgroundColor: red, content: const Text('Fields cannot be empty'));
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
             } else {
               var val = double.parse(value);
@@ -57,10 +53,7 @@ class _DeveloperOptionsState extends State<DeveloperOptions> {
               }
             }
           },
-          decoration: InputDecoration(
-              border: InputBorder.none,
-              labelText: label,
-              labelStyle: poppins(textLight, h6, FontWeight.w500)),
+          decoration: InputDecoration(border: InputBorder.none, labelText: label, labelStyle: poppins(textLight, h6, FontWeight.w500)),
         ),
       );
     }
@@ -95,8 +88,7 @@ class _DeveloperOptionsState extends State<DeveloperOptions> {
                     ),
                   ),
                   Container(
-                      margin:
-                          const EdgeInsets.only(left: 15, right: 15, top: 8),
+                      margin: const EdgeInsets.only(left: 15, right: 15, top: 8),
                       child: RemasteredShowcase(
                         showcase: showcase,
                       )),
@@ -140,10 +132,8 @@ class _DeveloperOptionsState extends State<DeveloperOptions> {
                     child: Container(
                       height: 50,
                       width: 50,
-                      margin: EdgeInsets.all(15),
-                      decoration: BoxDecoration(
-                          color: waterColor,
-                          borderRadius: BorderRadius.circular(8)),
+                      margin: const EdgeInsets.all(15),
+                      decoration: BoxDecoration(color: waterColor, borderRadius: BorderRadius.circular(8)),
                       child: Center(
                         child: Text(
                           "Save data",

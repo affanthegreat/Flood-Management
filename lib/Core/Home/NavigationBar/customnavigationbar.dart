@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:untitled/Designs/designs.dart';
 
 class CustomAnimatedBottomBar extends StatelessWidget {
-  CustomAnimatedBottomBar({
+  const CustomAnimatedBottomBar({
     Key? key,
     this.selectedIndex = 0,
     this.showElevation = true,
@@ -40,21 +40,17 @@ class CustomAnimatedBottomBar extends StatelessWidget {
     return Container(
       height: containerHeight,
       width: 250,
-      decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.25),
-              blurRadius: 20.0,
-              spreadRadius: 10.0,
-              offset: const Offset(
-                5.0,
-                5.0,
-              ),
-            )
-          ],
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(15),
-          border: Border.all(width: 0.1, color: textLight)),
+      decoration: BoxDecoration(boxShadow: [
+        BoxShadow(
+          color: Colors.grey.withOpacity(0.25),
+          blurRadius: 20.0,
+          spreadRadius: 10.0,
+          offset: const Offset(
+            5.0,
+            5.0,
+          ),
+        )
+      ], color: Colors.white, borderRadius: BorderRadius.circular(15), border: Border.all(width: 0.1, color: textLight)),
       child: Container(
         height: containerHeight,
         padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 6),
@@ -112,8 +108,7 @@ class _ItemWidget extends StatelessWidget {
         duration: animationDuration,
         curve: curve,
         decoration: BoxDecoration(
-          color:
-              isSelected ? item.activeColor.withOpacity(0.2) : backgroundColor,
+          color: isSelected ? item.activeColor.withOpacity(0.2) : backgroundColor,
           borderRadius: BorderRadius.circular(15),
         ),
         child: SingleChildScrollView(
@@ -130,11 +125,7 @@ class _ItemWidget extends StatelessWidget {
                 IconTheme(
                   data: IconThemeData(
                     size: 30,
-                    color: isSelected
-                        ? item.activeColor.withOpacity(1)
-                        : item.inactiveColor == null
-                            ? item.activeColor
-                            : item.inactiveColor,
+                    color: isSelected ? item.activeColor.withOpacity(1) : item.inactiveColor ?? item.activeColor,
                   ),
                   child: item.icon,
                 ),

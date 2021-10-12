@@ -4,11 +4,10 @@ import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 
 class BucketModel extends StatefulWidget {
-  late double bucketHeight;
-  late double waterHeight;
+  final double bucketHeight;
+  final double waterHeight;
 
-  BucketModel({required this.bucketHeight, required this.waterHeight, Key? key})
-      : super(key: key);
+  const BucketModel({required this.bucketHeight, required this.waterHeight, Key? key}) : super(key: key);
 
   @override
   State<BucketModel> createState() => _BucketModelState();
@@ -66,9 +65,7 @@ class _BucketModelState extends State<BucketModel> {
               margin: const EdgeInsets.all(10),
               child: Column(
                 children: [
-                  Water(
-                      height: widget.bucketHeight,
-                      waterHeight: widget.waterHeight),
+                  Water(height: widget.bucketHeight, waterHeight: widget.waterHeight),
                   Align(
                     alignment: Alignment.center,
                     child: Text(
@@ -87,10 +84,9 @@ class _BucketModelState extends State<BucketModel> {
 }
 
 class Water extends StatefulWidget {
-  double height;
-  double waterHeight;
-  Water({required this.height, required this.waterHeight, Key? key})
-      : super(key: key);
+  final double height;
+  final double waterHeight;
+  const Water({required this.height, required this.waterHeight, Key? key}) : super(key: key);
 
   @override
   _WaterState createState() => _WaterState();

@@ -15,7 +15,7 @@ class Bucket {
   }
 
   setWaterHeight(double bucketHeight) {
-    this.waterHeight = bucketHeight;
+    waterHeight = bucketHeight;
   }
 
   BucketModel getModel() {

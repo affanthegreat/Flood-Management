@@ -11,8 +11,8 @@ class Showcase {
 }
 
 class RemasteredShowcase extends StatefulWidget {
-  Showcase showcase;
-  RemasteredShowcase({required this.showcase, Key? key}) : super(key: key);
+  final Showcase showcase;
+  const RemasteredShowcase({required this.showcase, Key? key}) : super(key: key);
 
   @override
   _RemasteredShowcaseState createState() => _RemasteredShowcaseState();

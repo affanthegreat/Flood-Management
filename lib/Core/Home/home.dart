@@ -4,6 +4,7 @@ import 'package:untitled/Core/Bucket/Bucket.dart';
 import 'package:untitled/Core/Buttons/Models/buttonmodel.dart';
 import 'package:untitled/Core/Buttons/Models/remasteredbutton.dart';
 import 'package:untitled/Core/Buttons/button.dart';
+import 'package:untitled/Core/Reports/reportview.dart';
 import 'package:untitled/Designs/designs.dart';
 
 import 'Drawer/drawer.dart';
@@ -41,7 +42,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     Widget buildBottomBar() {
       return Container(
         alignment: Alignment.bottomCenter,
-        margin: EdgeInsets.all(15),
+        margin: const EdgeInsets.all(15),
         child: CustomAnimatedBottomBar(
           containerHeight: 70,
           backgroundColor: backgroundColor,
@@ -74,22 +75,19 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       return Align(
           alignment: Alignment.centerLeft,
           child: Container(
-            margin: EdgeInsets.only(left: 15, top: 10),
+            margin: const EdgeInsets.only(left: 15, top: 10),
             child: RichText(
-              text: TextSpan(
-                  text: "STATUS\n",
-                  style: poppins(textLight, h6, FontWeight.w600),
-                  children: <TextSpan>[
-                    status
-                        ? TextSpan(
-                            text: "Minimal",
-                            style: poppins(textDark, h1 + 10, FontWeight.w700),
-                          )
-                        : TextSpan(
-                            text: "Flood Detected!",
-                            style: poppins(red, h1 + 10, FontWeight.w700),
-                          )
-                  ]),
+              text: TextSpan(text: "STATUS\n", style: poppins(textLight, h6, FontWeight.w600), children: <TextSpan>[
+                status
+                    ? TextSpan(
+                        text: "Minimal",
+                        style: poppins(textDark, h1 + 10, FontWeight.w700),
+                      )
+                    : TextSpan(
+                        text: "Flood Detected!",
+                        style: poppins(red, h1 + 10, FontWeight.w700),
+                      )
+              ]),
             ),
           ));
     }
@@ -107,8 +105,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               showcase = Showcase();
               bucket = Bucket();
               bucket.setBucketHeight(bucketHeight);
-              bucket.setWaterHeight(bucketHeight *
-                  (snapshot.data!.docs[0]['percentageFilled'] / 100));
+              bucket.setWaterHeight(bucketHeight * (snapshot.data!.docs[0]['percentageFilled'] / 100));
               bucket.setBucketStream("");
               bucket.renderModel();
 
@@ -118,48 +115,42 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               pressureButton.setBottomText("Water Pressure");
               pressureButton.setButtonColor(buttonColor);
               pressureButton.setMeasureUnit("psi");
-              pressureButton.setButtonLabel(
-                  snapshot.data!.docs[0]['pressure'].toString());
+              pressureButton.setButtonLabel(snapshot.data!.docs[0]['pressure'].toString());
               pressureButton.render();
 
               var levelButton = Button();
               levelButton.setBottomText("Water Level (in ft)");
               levelButton.setButtonColor(buttonColor);
               levelButton.setMeasureUnit("ft");
-              levelButton
-                  .setButtonLabel(snapshot.data!.docs[0]['feet'].toString());
+              levelButton.setButtonLabel(snapshot.data!.docs[0]['feet'].toString());
               levelButton.render();
 
               var flowRate = Button();
               flowRate.setBottomText("Flow rate");
               flowRate.setButtonColor(buttonColor);
               flowRate.setMeasureUnit("gpm");
-              flowRate.setButtonLabel(
-                  snapshot.data!.docs[0]['flowrate'].toString());
+              flowRate.setButtonLabel(snapshot.data!.docs[0]['flowrate'].toString());
               flowRate.render();
 
               var humidity = Button();
               humidity.setBottomText("Humidity");
               humidity.setButtonColor(buttonColor);
               humidity.setMeasureUnit("");
-              humidity.setButtonLabel(
-                  snapshot.data!.docs[0]['humidity'].toString());
+              humidity.setButtonLabel(snapshot.data!.docs[0]['humidity'].toString());
               humidity.render();
 
               var temperature = Button();
               temperature.setBottomText("Temperature");
               temperature.setButtonColor(buttonColor);
               temperature.setMeasureUnit("°c");
-              temperature.setButtonLabel(
-                  snapshot.data!.docs[0]['temperature'].toString());
+              temperature.setButtonLabel(snapshot.data!.docs[0]['temperature'].toString());
               temperature.render();
 
               var bigButton = Button();
               bigButton.setButtonLabel("Reports");
               bigButton.setButtonColor(bigButtonColor);
               bigButton.setMeasureUnit("");
-              bigButton.setBottomText(
-                  "Access all the previous reports related to floods in this region.");
+              bigButton.setBottomText("Access all the previous reports related to floods in this region.");
               bigButton.render();
 
               showcase.addWidget(pressureButton);
@@ -168,8 +159,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               showcase.addWidget(temperature);
               showcase.addWidget(humidity);
               buttons.add(bigButton);
-              var status =
-                  (snapshot.data!.docs[0]['percentageFilled'] / 100) < 0.70;
+              var status = (snapshot.data!.docs[0]['percentageFilled'] / 100) < 0.70;
               return ListView(
                 physics: const BouncingScrollPhysics(
                   parent: AlwaysScrollableScrollPhysics(),
@@ -178,15 +168,19 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   statusText(status),
                   bucket.getModel(),
                   Container(
-                      margin:
-                          const EdgeInsets.only(left: 15, right: 15, top: 8),
+                      margin: const EdgeInsets.only(left: 15, right: 15, top: 8),
                       child: RemasteredShowcase(
                         showcase: showcase,
                       )),
-                  BigButton(
-                    label: buttons[0].buttonLabel,
-                    buttonColor: buttons[0].buttonColor,
-                    shortDescription: buttons[0].bottomText,
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const ReportView()));
+                    },
+                    child: BigButton(
+                      label: buttons[0].buttonLabel,
+                      buttonColor: buttons[0].buttonColor,
+                      shortDescription: buttons[0].bottomText,
+                    ),
                   ),
                   Container(
                     height: 80,
@@ -218,7 +212,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           toolbarHeight: 0,
         ),
         body: ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: 500),
+          constraints: const BoxConstraints(maxWidth: 500),
           child: Stack(
             children: [getBody(), buildBottomBar()],
           ),
